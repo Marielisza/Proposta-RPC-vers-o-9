@@ -83,12 +83,10 @@ if gerar_btn:
         # --- PÁGINA 1: CAPA VERMELHA ---
         pdf.add_page()
         
-        # Puxa a sua imagem vermelha para cobrir o fundo A4 (210x297mm)
         nome_imagem_capa = 'logo_colorida.png.png'
         if os.path.exists(nome_imagem_capa):
             pdf.image(nome_imagem_capa, 0, 0, w=210, h=297)
         else:
-            # Cor de segurança caso a imagem não esteja na pasta
             pdf.set_fill_color(200, 20, 30) 
             pdf.rect(0, 0, 210, 297, 'F')
         
@@ -97,26 +95,32 @@ if gerar_btn:
         # Bloco: EMPRESA
         pdf.set_y(80)
         pdf.set_font("Arial", 'B', 12)
-        pdf.cell(0, 6, "EMPRESA", ln=True, align='L')
+        pdf.set_x(10)
+        pdf.cell(190, 6, "EMPRESA", ln=True, align='L')
         pdf.set_font("Arial", '', 20)
-        pdf.multi_cell(0, 10, razao_social.upper(), align='L')
+        pdf.set_x(10)
+        pdf.multi_cell(190, 10, razao_social.upper(), align='L')
         
         pdf.ln(15)
         
         # Bloco: SERVIÇO
         pdf.set_font("Arial", 'B', 12)
-        pdf.cell(0, 6, "SERVICO", ln=True, align='L')
+        pdf.set_x(10)
+        pdf.cell(190, 6, "SERVICO", ln=True, align='L')
         pdf.set_font("Arial", '', 18)
-        pdf.multi_cell(0, 8, "Retificacoes Das Declaracoes\ne Compensacoes Mensais", align='L')
+        pdf.set_x(10)
+        pdf.multi_cell(190, 8, "Retificacoes Das Declaracoes\ne Compensacoes Mensais", align='L')
         
         pdf.ln(15)
         
         # Bloco: EMISSÃO
         pdf.set_font("Arial", 'B', 12)
-        pdf.cell(0, 6, "EMISSAO", ln=True, align='L')
+        pdf.set_x(10)
+        pdf.cell(190, 6, "EMISSAO", ln=True, align='L')
         pdf.set_font("Arial", '', 16)
         data_emissao = datetime.today().strftime('%d/%m/%Y')
-        pdf.cell(0, 8, data_emissao, ln=True, align='L')
+        pdf.set_x(10)
+        pdf.cell(190, 8, data_emissao, ln=True, align='L')
 
         # --- PÁGINA 2: CONTEÚDO TÉCNICO ---
         pdf.add_page()
@@ -126,7 +130,8 @@ if gerar_btn:
 
         # 1. Contexto
         pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, "Contexto", ln=True)
+        pdf.set_x(10)
+        pdf.cell(190, 10, "Contexto", ln=True)
         pdf.set_font("Arial", '', 11)
         texto_contexto = (
             f"A {razao_social} apos a identificacao das oportunidades apresentadas no trabalho de "
@@ -134,12 +139,14 @@ if gerar_btn:
             "creditos de PIS e COFINS, dependem da retificacao das informacoes constantes da DCTF "
             "e EFD Contribuicoes."
         )
-        pdf.multi_cell(0, 6, texto_contexto)
+        pdf.set_x(10)
+        pdf.multi_cell(190, 6, texto_contexto)
         pdf.ln(5)
 
         # 2. Objetivo
         pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, "Objetivo", ln=True)
+        pdf.set_x(10)
+        pdf.cell(190, 10, "Objetivo", ln=True)
         pdf.set_font("Arial", '', 11)
         texto_objetivo = (
             "O servico de Retificacoes e Procedimentos de Compensacao preve a retificacao de todas "
@@ -151,12 +158,14 @@ if gerar_btn:
             "profundidade dos exames e analises, assim como o emprego de horas tecnicas de "
             "especialistas em Declaracoes Eletronicas."
         )
-        pdf.multi_cell(0, 6, texto_objetivo)
+        pdf.set_x(10)
+        pdf.multi_cell(190, 6, texto_objetivo)
         pdf.ln(5)
 
         # 3. Escopo
         pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, "Escopo", ln=True)
+        pdf.set_x(10)
+        pdf.cell(190, 10, "Escopo", ln=True)
         pdf.set_font("Arial", '', 11)
         texto_escopo = (
             "A Dr. Fiscal prestara servicos de consultoria fiscal, no sentido de retificacao das "
@@ -164,33 +173,44 @@ if gerar_btn:
             "pela Receita Federal do Brasil, com o objetivo de habilitar eventuais ativos que a "
             "empresa tenha direito de receber."
         )
-        pdf.multi_cell(0, 6, texto_escopo)
+        pdf.set_x(10)
+        pdf.multi_cell(190, 6, texto_escopo)
         pdf.ln(5)
 
         # 4. Investimento
         pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, "Investimento", ln=True)
+        pdf.set_x(10)
+        pdf.cell(190, 10, "Investimento", ln=True)
         pdf.set_font("Arial", '', 11)
-        pdf.multi_cell(0, 6, "A seguir, descrevemos o investimento proposto para cada escopo dos trabalhos apresentados:")
+        pdf.set_x(10)
+        pdf.multi_cell(190, 6, "A seguir, descrevemos o investimento proposto para cada escopo dos trabalhos apresentados:")
         
         pdf.ln(2)
-        pdf.multi_cell(0, 6, f"a) Remuneracao: R$ {formatar_real(total_servico)} condicionado a avaliacao da proposta dentro da validade prevista nas notas desta proposta.")
-        pdf.multi_cell(0, 6, f"b) Horas tecnicas alocadas: {horas_tecnicas} horas.")
-        pdf.multi_cell(0, 6, f"c) Forma de Pagamento: A vista ou em ate {parcelas} parcelas mensais, iguais e consecutivas.")
-        pdf.multi_cell(0, 6, f"d) Prazo para finalizacao: 60 dias.")
+        pdf.set_x(10)
+        pdf.multi_cell(190, 6, f"a) Remuneracao: R$ {formatar_real(total_servico)} condicionado a avaliacao da proposta dentro da validade prevista nas notas desta proposta.")
+        pdf.set_x(10)
+        pdf.multi_cell(190, 6, f"b) Horas tecnicas alocadas: {horas_tecnicas} horas.")
+        pdf.set_x(10)
+        pdf.multi_cell(190, 6, f"c) Forma de Pagamento: A vista ou em ate {parcelas} parcelas mensais, iguais e consecutivas.")
+        pdf.set_x(10)
+        pdf.multi_cell(190, 6, f"d) Prazo para finalizacao: 60 dias.")
         pdf.ln(5)
 
         # 5. Notas
         pdf.set_font("Arial", 'B', 14)
-        pdf.cell(0, 10, "Notas", ln=True)
+        pdf.set_x(10)
+        pdf.cell(190, 10, "Notas", ln=True)
         pdf.set_font("Arial", '', 11)
-        pdf.multi_cell(0, 6, "Esta proposta tem validade de 3 dias uteis.")
+        pdf.set_x(10)
+        pdf.multi_cell(190, 6, "Esta proposta tem validade de 3 dias uteis.")
 
         # Rodapé
         pdf.set_y(-25)
         pdf.set_font("Arial", 'I', 8)
-        pdf.cell(0, 5, razao_social.upper(), ln=True, align='C')
-        pdf.cell(0, 5, "PROPOSTA DE TRABALHO - Pagina 2 de 2", ln=True, align='C')
+        pdf.set_x(10)
+        pdf.cell(190, 5, razao_social.upper(), ln=True, align='C')
+        pdf.set_x(10)
+        pdf.cell(190, 5, "PROPOSTA DE TRABALHO - Pagina 2 de 2", ln=True, align='C')
 
         # Download do PDF
         try:
