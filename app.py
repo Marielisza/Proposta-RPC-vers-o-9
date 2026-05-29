@@ -96,7 +96,7 @@ if gerar_btn:
             pdf.add_font('Amplesoft', 'B', 'AmpleSoft-Bold.ttf', uni=True)
             font_pdf = 'Amplesoft'
         except:
-            font_pdf = 'Arial'
+            font_pdf = 'Amplesoft'
 
         # --- PÁGINA 1: CAPA ---
         pdf.add_page()
@@ -131,7 +131,7 @@ if gerar_btn:
         
         pdf.set_font(font_pdf, 'B', 12)
         pdf.set_x(10)
-        pdf.cell(190, 6, "Data", ln=True, align='L')
+        pdf.cell(190, 6, "Data de emissão", ln=True, align='L')
         pdf.set_font(font_pdf, '', 16)
         data_emissao = datetime.today().strftime('%d/%m/%Y')
         pdf.set_x(10)
@@ -167,7 +167,7 @@ if gerar_btn:
             "empresa tenha direito de receber.\n\n"
             "O grande diferencial dos serviços prestados pela Dr. Fiscal através deste escopo é a "
             "profundidade dos exames e análises, assim como o emprego de horas técnicas de "
-            "especialistas em Declarações Eletrônicas."
+            "especialistas em declarações acessórias."
         )
         pdf.multi_cell(180, 6, texto_objetivo)
         pdf.ln(5)
