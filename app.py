@@ -190,7 +190,7 @@ if gerar_btn:
         pdf.multi_cell(180, 6, texto_escopo)
         pdf.ln(5)
 
-        # 4. Investimento (CORRIGIDO E ALINHADO)
+        # 4. Investimento
         pdf.set_font(font_pdf, 'B', 14)
         pdf.cell(180, 10, "Investimento", ln=True)
         pdf.set_font(font_pdf, '', 11)
@@ -219,9 +219,9 @@ if gerar_btn:
         pdf.set_font(font_pdf, '', 11)
         pdf.multi_cell(180, 6, "Esta proposta tem validade de 3 dias úteis.")
 
-        # Rodapé
+        # Rodapé (Modificado: Removida a indicação de número de página)
         pdf.set_y(-25)
-        pdf.set_font("Amplesoft", 'I', 8)
+        pdf.set_font("Arial", 'I', 8)
         pdf.cell(180, 5, razao_social.upper(), ln=True, align='C')
 
         # Download do PDF
