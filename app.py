@@ -1,4 +1,4 @@
-Aimport streamlit as st
+import streamlit as st
 from fpdf import FPDF
 from datetime import datetime
 import os
@@ -121,7 +121,7 @@ if gerar_btn:
         
         pdf.ln(15)
         
-        # Bloco: SERVIÇO
+        # Bloco: SERVIÇO (Restaurado para o nome original)
         pdf.set_font(font_pdf, 'B', 12)
         pdf.set_x(10)
         pdf.cell(190, 6, "SERVIÇO", ln=True, align='L')
@@ -159,7 +159,7 @@ if gerar_btn:
         pdf.multi_cell(180, 6, texto_contexto)
         pdf.ln(5)
 
-        # 2. Objetivo (Texto atualizado para declarações acessórias)
+        # 2. Objetivo
         pdf.set_font(font_pdf, 'B', 14)
         pdf.cell(180, 10, "Objetivo", ln=True)
         pdf.set_font(font_pdf, '', 11)
@@ -175,12 +175,12 @@ if gerar_btn:
         pdf.multi_cell(180, 6, texto_objetivo)
         pdf.ln(5)
 
-        # 3. Escopo
+        # 3. Escopo (Restaurado para o nome original)
         pdf.set_font(font_pdf, 'B', 14)
         pdf.cell(180, 10, "Escopo", ln=True)
         pdf.set_font(font_pdf, '', 11)
         texto_escopo = (
-            "O serviço de Retificações e Procedimentos de Compensação prevê a retificação de todas "
+            "O serviço de Retificações das Declarações e Compensações Mensais prevê a retificação de todas "
             "as obrigações fiscais acessórias necessárias para a correta habilitação dos ativos e "
             "dos passivos identificados no trabalho de Diagnóstico Tributário. Estão contempladas "
             "no escopo dessa proposta a retificação de DCTF, DCTFWeb, MIT, ECF, EFD Contribuições, "
