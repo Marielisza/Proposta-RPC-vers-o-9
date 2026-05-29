@@ -1,4 +1,4 @@
-import streamlit as st
+Aimport streamlit as st
 from fpdf import FPDF
 from datetime import datetime
 import os
@@ -65,7 +65,6 @@ col7, col8, col9 = st.columns(3)
 with col7:
     parcelas = st.number_input("Quantidade de Parcelas", 1, 12, 5)
 with col8:
-    # Linha corrigida de forma compacta para evitar quebras involuntárias na colagem
     vencimento = st.text_input("Data do 1º Vencimento", value=datetime.today().strftime('%d/%m/%Y'))
 with col9:
     horas_tecnicas = st.number_input("Horas Técnicas (Informativo)", value=20)
@@ -91,12 +90,13 @@ if gerar_btn:
         # ==========================================
         pdf = FPDF()
         
+        # --- REGISTRO SEGURO DAS FONTES ---
         try:
             pdf.add_font('Amplesoft', '', 'AmpleSoft-Regular.ttf', uni=True)
             pdf.add_font('Amplesoft', 'B', 'AmpleSoft-Bold.ttf', uni=True)
             font_pdf = 'Amplesoft'
         except:
-            font_pdf = 'Amplesoft'
+            font_pdf = 'Arial'
 
         # --- PÁGINA 1: CAPA ---
         pdf.add_page()
@@ -110,6 +110,7 @@ if gerar_btn:
         
         pdf.set_text_color(255, 255, 255)
         
+        # Bloco: EMPRESA
         pdf.set_y(80)
         pdf.set_font(font_pdf, 'B', 12)
         pdf.set_x(10)
@@ -120,6 +121,7 @@ if gerar_btn:
         
         pdf.ln(15)
         
+        # Bloco: SERVIÇO
         pdf.set_font(font_pdf, 'B', 12)
         pdf.set_x(10)
         pdf.cell(190, 6, "SERVIÇO", ln=True, align='L')
@@ -129,9 +131,10 @@ if gerar_btn:
         
         pdf.ln(15)
         
+        # Bloco: EMISSÃO
         pdf.set_font(font_pdf, 'B', 12)
         pdf.set_x(10)
-        pdf.cell(190, 6, "Data de emissão", ln=True, align='L')
+        pdf.cell(190, 6, "Data", ln=True, align='L')
         pdf.set_font(font_pdf, '', 16)
         data_emissao = datetime.today().strftime('%d/%m/%Y')
         pdf.set_x(10)
@@ -156,7 +159,7 @@ if gerar_btn:
         pdf.multi_cell(180, 6, texto_contexto)
         pdf.ln(5)
 
-        # 2. Objetivo
+        # 2. Objetivo (Texto atualizado para declarações acessórias)
         pdf.set_font(font_pdf, 'B', 14)
         pdf.cell(180, 10, "Objetivo", ln=True)
         pdf.set_font(font_pdf, '', 11)
@@ -181,7 +184,7 @@ if gerar_btn:
             "as obrigações fiscais acessórias necessárias para a correta habilitação dos ativos e "
             "dos passivos identificados no trabalho de Diagnóstico Tributário. Estão contempladas "
             "no escopo dessa proposta a retificação de DCTF, DCTFWeb, MIT, ECF, EFD Contribuições, "
-            "bem como a preparação dos pedidos de restituição, compensações mensais e além de todas as diligências."
+            "bem como a preparação dos pedidos de ressarcimento, restituição, compensações mensais e além de todas as diligências."
         )
         pdf.multi_cell(180, 6, texto_escopo)
         pdf.ln(5)
