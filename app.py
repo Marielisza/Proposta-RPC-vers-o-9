@@ -55,7 +55,8 @@ with col4:
 st.subheader("💰 Parâmetros do Serviço")
 col5, col6 = st.columns(2)
 with col5:
-    valor_credito = st.number_input("Faixa de Crédito (R$)", min_value=0.0, step=1000.0, format="%.2f")
+    # Mudança para text_input com exemplo explicativo para o usuário
+    valor_credito_texto = st.text_input("Faixa de Crédito (R$)", value="1.000,00", help="Digite no formato 1.000,00 ou 1000,00")
 with col6:
     meses = st.selectbox("Quantidade de Meses do Diagnóstico", [12, 24, 36, 48, 60])
 
@@ -80,6 +81,15 @@ if gerar_btn:
     if not razao_social or not consultor:
         st.error("Por favor, preencha a Razão Social e o Consultor.")
     else:
+        # --- TRATAMENTO E CONVERSÃO DO TEXTO PARA FLOAT ---
+        try:
+            # Remove pontos de milhar e substitui a vírgula decimal por ponto para o Python calcular
+            valor_limpo = valor_credito_texto.replace(".", "").replace(",", ".")
+            valor_credito = float(valor_limpo)
+        except ValueError:
+            st.error("O valor digitado na 'Faixa de Crédito' é inválido. Certifique-se de usar apenas números, pontos e uma vírgula (Ex: 1.250,50).")
+            st.stop()
+
         # Cálculos de valores
         custo_base = buscar_custo_interno(valor_credito, meses)
         total_servico = custo_base / (1 - percentual)
@@ -198,11 +208,11 @@ if gerar_btn:
         pdf.ln(4) 
         
         # Alínea a)
-        pdf.multi_cell(180, 6, f"a) Remuneração: {formatar_real(total_servico)} ({extenso_total}), condicionado à avaliação da proposta dentro da validade prevista nas notas desta proposta.")
+        pdf.multi_cell(180, 6, f"a) Remuneração: R$ {formatar_real(total_servico)} ({extenso_total}), condicionado à avaliação da proposta dentro da validade prevista nas notas desta proposta.")
         pdf.ln(2) 
         
-        # Alínea b)
-        pdf.multi_cell(180, 6, f"b) Horas técnicas alocadas: {horas_tecnicas} hours.")
+        # Alínea b) (Corrigido de 'hours' para 'horas')
+        pdf.multi_cell(180, 6, f"b) Horas técnicas alocadas: {horas_tecnicas} horas.")
         pdf.ln(2)
         
         # Alínea c)
@@ -219,9 +229,22 @@ if gerar_btn:
         pdf.set_font(font_pdf, '', 11)
         pdf.multi_cell(180, 6, "Esta proposta tem validade de 3 dias úteis.")
 
-        # Rodapé (Ajustado para usar Amplesoft em formato Itálico, caso aplicável)
+        # Rodapé
         pdf.set_y(-25)
+        pdf.set_font(font_pdf, '', 8)
+        pdf.cell(180, 5, razao_social.upper(), ln=True, align='C')
+
+        # Download do PDF
         try:
-            pdf.set_font(font_pdf, 'I', 8)
+            pdf_output = pdf.output(dest='S').encode('latin-1', 'ignore')
         except:
-            pdf.set_font(font_pdf, '',
+            pdf_output = bytes(pdf.output())
+
+        st.success("Cálculo realizado e PDF gerado com sucesso!")
+        st.download_button(
+            label="📥 Baixar Proposta em PDF",
+            data=pdf_output,
+            file_name=f"Proposta_RPC_{razao_social}.pdf",
+            mime="application/pdf",
+            type="primary"
+        )
