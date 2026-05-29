@@ -134,7 +134,7 @@ if gerar_btn:
         # Bloco: EMISSÃO
         pdf.set_font(font_pdf, 'B', 12)
         pdf.set_x(10)
-        pdf.cell(190, 6, "Data", ln=True, align='L')
+        pdf.cell(190, 6, "Data de Emissão", ln=True, align='L')
         pdf.set_font(font_pdf, '', 16)
         data_emissao = datetime.today().strftime('%d/%m/%Y')
         pdf.set_x(10)
