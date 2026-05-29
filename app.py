@@ -155,7 +155,7 @@ if gerar_btn:
             f"A {razao_social}, após a identificação das oportunidades apresentadas no trabalho de "
             "Diagnóstico Tributário apresentado pela Dr. Fiscal, verificou que a habilitação dos "
             "créditos de PIS, COFINS, IRPJ e CSLL, bem como a correção de débitos de IRPJ e CSLL, "
-            "dependem da retificação das informações constantes da DCTF, ECF e EFD Contribuições."
+            "dependem da retificação das informações constantes da DCTF, DCTFWeb, MIT, ECF e EFD Contribuições."
         )
         pdf.multi_cell(180, 6, texto_contexto)
         pdf.ln(5)
@@ -167,7 +167,7 @@ if gerar_btn:
         texto_objetivo = (
             "A Dr. Fiscal prestará serviços de consultoria fiscal, no sentido de retificação das "
             "obrigações fiscais acessórias, de acordo com as orientações e regulamentações emitidas "
-            "pela Receita Federal do Brasil, com o objective de habilitar eventuais ativos que a "
+            "pela Receita Federal do Brasil, com o objetivo de habilitar eventuais ativos que a "
             "empresa tenha direito de receber.\n\n"
             "O grande diferencial dos serviços prestados pela Dr. Fiscal através deste escopo é a "
             "profundidade dos exames e análises, assim como o emprego de horas técnicas de "
@@ -184,8 +184,8 @@ if gerar_btn:
             "O serviço de Retificações e Procedimentos de Compensação prevê a retificação de todas "
             "as obrigações fiscais acessórias necessárias para a correta habilitação dos ativos e "
             "dos passivos identificados no trabalho de Diagnóstico Tributário. Estão contempladas "
-            "no escopo dessa proposta a retificação de DCTF e ECF, EFD Contribuições, bem como a "
-            "preparação dos pedidos de restituição, compensações mensais e além de todas as diligências."
+            "no escopo dessa proposta a retificação de DCTF, DCTFWeb, MIT, ECF, EFD Contribuições, "
+            "bem como a preparação dos pedidos de restituição, compensações mensais e além de todas as diligências."
         )
         pdf.multi_cell(180, 6, texto_escopo)
         pdf.ln(5)
@@ -202,7 +202,7 @@ if gerar_btn:
         pdf.ln(2) 
         
         # Alínea b)
-        pdf.multi_cell(180, 6, f"b) Horas técnicas alocadas: {horas_tecnicas} horas.")
+        pdf.multi_cell(180, 6, f"b) Horas técnicas alocadas: {horas_tecnicas} hours.")
         pdf.ln(2)
         
         # Alínea c)
@@ -219,22 +219,9 @@ if gerar_btn:
         pdf.set_font(font_pdf, '', 11)
         pdf.multi_cell(180, 6, "Esta proposta tem validade de 3 dias úteis.")
 
-        # Rodapé (Modificado: Removida a indicação de número de página)
+        # Rodapé (Ajustado para usar Amplesoft em formato Itálico, caso aplicável)
         pdf.set_y(-25)
-        pdf.set_font("Arial", 'I', 8)
-        pdf.cell(180, 5, razao_social.upper(), ln=True, align='C')
-
-        # Download do PDF
         try:
-            pdf_output = pdf.output(dest='S').encode('latin-1', 'ignore')
+            pdf.set_font(font_pdf, 'I', 8)
         except:
-            pdf_output = bytes(pdf.output())
-
-        st.success("Cálculo realizado e PDF gerado com sucesso!")
-        st.download_button(
-            label="📥 Baixar Proposta em PDF",
-            data=pdf_output,
-            file_name=f"Proposta_RPC_{razao_social}.pdf",
-            mime="application/pdf",
-            type="primary"
-        )
+            pdf.set_font(font_pdf, '',
