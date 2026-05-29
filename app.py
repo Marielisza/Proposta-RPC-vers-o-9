@@ -74,30 +74,30 @@ with col9:
 with st.sidebar:
     st.write("") 
     st.write("")
-    gerar_btn = st.button("Gerar Capa da Proposta", use_container_width=True, type="primary")
+    gerar_btn = st.button("Gerar Proposta Profissional", use_container_width=True, type="primary")
 
 if gerar_btn:
     if not razao_social or not consultor:
         st.error("Por favor, preencha a Razão Social e o Consultor.")
     else:
-        # Cálculos de valores (mantidos caso precise expandir ou validar no ecrã do Streamlit)
+        # Cálculos de valores
         custo_base = buscar_custo_interno(valor_credito, meses)
         total_servico = custo_base / (1 - percentual)
         valor_parcela = total_servico / parcelas
         extenso_total = valor_por_extenso(total_servico)
 
         # ==========================================
-        # GERAÇÃO DO PDF (APENAS CAPA)
+        # GERAÇÃO DO PDF
         # ==========================================
         pdf = FPDF()
         
-        # --- REGISTRO DAS FONTES ---
+        # --- REGISTRO DAS FONTES (Evita erro de Font Undefined) ---
         try:
             pdf.add_font('Amplesoft', '', 'AmpleSoft-Regular.ttf', uni=True)
             pdf.add_font('Amplesoft', 'B', 'AmpleSoft-Bold.ttf', uni=True)
             font_pdf = 'Amplesoft'
         except:
-            font_pdf = 'Arial'
+            font_pdf = 'Arial' # Fallback de segurança
 
         # --- PÁGINA 1: CAPA ---
         pdf.add_page()
@@ -106,7 +106,6 @@ if gerar_btn:
         if os.path.exists(nome_imagem_capa):
             pdf.image(nome_imagem_capa, 0, 0, w=210, h=297)
         else:
-            # Fundo Vermelho caso a imagem falhe
             pdf.set_fill_color(230, 51, 18) 
             pdf.rect(0, 0, 210, 297, 'F')
         
@@ -142,17 +141,100 @@ if gerar_btn:
         pdf.set_x(10)
         pdf.cell(190, 8, data_emissao, ln=True, align='L')
 
-        # Download do PDF (Removida a lógica da página 2)
+        # --- PÁGINA 2: CONTEÚDO TÉCNICO ---
+        pdf.add_page()
+        pdf.set_text_color(0, 0, 0) # Volta para o texto preto
+        pdf.set_margins(15, 20, 15)
+        pdf.set_y(20)
+
+        # 1. Contexto
+        pdf.set_font(font_pdf, 'B', 14)
+        pdf.cell(180, 10, "Contexto", ln=True)
+        pdf.set_font(font_pdf, '', 11)
+        texto_contexto = (
+            f"A {razao_social}, após a identificação das oportunidades apresentadas no trabalho de "
+            "Diagnóstico Tributário apresentado pela Dr. Fiscal, verificou que a habilitação dos "
+            "créditos de PIS, COFINS, IRPJ e CSLL, bem como a correção de débitos de IRPJ e CSLL, "
+            "dependem da retificação das informações constantes da DCTF, ECF e EFD Contribuições."
+        )
+        pdf.multi_cell(180, 6, texto_contexto)
+        pdf.ln(5)
+
+        # 2. Objetivo
+        pdf.set_font(font_pdf, 'B', 14)
+        pdf.cell(180, 10, "Objetivo", ln=True)
+        pdf.set_font(font_pdf, '', 11)
+        texto_objetivo = (
+            "A Dr. Fiscal prestará serviços de consultoria fiscal, no sentido de retificação das "
+            "obrigações fiscais acessórias, de acordo com as orientações e regulamentações emitidas "
+            "pela Receita Federal do Brasil, com o objective de habilitar eventuais ativos que a "
+            "empresa tenha direito de receber.\n\n"
+            "O grande diferencial dos serviços prestados pela Dr. Fiscal através deste escopo é a "
+            "profundidade dos exames e análises, assim como o emprego de horas técnicas de "
+            "especialistas em Declarações Eletrônicas."
+        )
+        pdf.multi_cell(180, 6, texto_objetivo)
+        pdf.ln(5)
+
+        # 3. Escopo
+        pdf.set_font(font_pdf, 'B', 14)
+        pdf.cell(180, 10, "Escopo", ln=True)
+        pdf.set_font(font_pdf, '', 11)
+        texto_escopo = (
+            "O serviço de Retificações e Procedimentos de Compensação prevê a retificação de todas "
+            "as obrigações fiscais acessórias necessárias para a correta habilitação dos ativos e "
+            "dos passivos identificados no trabalho de Diagnóstico Tributário. Estão contempladas "
+            "no escopo dessa proposta a retificação de DCTF e ECF, EFD Contribuições, bem como a "
+            "preparação dos pedidos de restituição, compensações mensais e além de todas as diligências."
+        )
+        pdf.multi_cell(180, 6, texto_escopo)
+        pdf.ln(5)
+
+        # 4. Investimento (CORRIGIDO E ALINHADO)
+        pdf.set_font(font_pdf, 'B', 14)
+        pdf.cell(180, 10, "Investimento", ln=True)
+        pdf.set_font(font_pdf, '', 11)
+        pdf.multi_cell(180, 6, "A seguir, descrevemos o investimento proposto para cada escopo dos trabalhos apresentados:")
+        pdf.ln(4) 
+        
+        # Alínea a)
+        pdf.multi_cell(180, 6, f"a) Remuneração: {formatar_real(total_servico)} ({extenso_total}), condicionado à avaliação da proposta dentro da validade prevista nas notas desta proposta.")
+        pdf.ln(2) 
+        
+        # Alínea b)
+        pdf.multi_cell(180, 6, f"b) Horas técnicas alocadas: {horas_tecnicas} horas.")
+        pdf.ln(2)
+        
+        # Alínea c)
+        pdf.multi_cell(180, 6, f"c) Forma de Pagamento: À vista ou em até {parcelas} parcelas mensais, iguais e consecutivas.")
+        pdf.ln(2)
+        
+        # Alínea d)
+        pdf.multi_cell(180, 6, f"d) Prazo para finalização: 60 dias.")
+        pdf.ln(5)
+
+        # 5. Notas
+        pdf.set_font(font_pdf, 'B', 14)
+        pdf.cell(180, 10, "Notas", ln=True)
+        pdf.set_font(font_pdf, '', 11)
+        pdf.multi_cell(180, 6, "Esta proposta tem validade de 3 dias úteis.")
+
+        # Rodapé
+        pdf.set_y(-25)
+        pdf.set_font("Amplesoft", 'I', 8)
+        pdf.cell(180, 5, razao_social.upper(), ln=True, align='C')
+
+        # Download do PDF
         try:
             pdf_output = pdf.output(dest='S').encode('latin-1', 'ignore')
         except:
             pdf_output = bytes(pdf.output())
 
-        st.success("Cálculo realizado e Capa em PDF gerada com sucesso!")
+        st.success("Cálculo realizado e PDF gerado com sucesso!")
         st.download_button(
-            label="📥 Baixar Capa da Proposta",
+            label="📥 Baixar Proposta em PDF",
             data=pdf_output,
-            file_name=f"Capa_Proposta_{razao_social}.pdf",
+            file_name=f"Proposta_RPC_{razao_social}.pdf",
             mime="application/pdf",
             type="primary"
         )
