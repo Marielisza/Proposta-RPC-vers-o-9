@@ -97,7 +97,7 @@ if gerar_btn:
             pdf.add_font('Amplesoft', 'B', 'AmpleSoft-Bold.ttf', uni=True)
             font_pdf = 'Amplesoft'
         except:
-            font_pdf = 'Arial' # Fallback caso os arquivos .ttf não estejam no repositório
+            font_pdf = 'Arial' # Fallback de segurança
 
         # --- PÁGINA 1: CAPA ---
         pdf.add_page()
@@ -111,7 +111,7 @@ if gerar_btn:
         
         pdf.set_text_color(255, 255, 255) # Texto Branco
         
-        # Bloco: EMPRESA [cite: 47]
+        # Bloco: EMPRESA
         pdf.set_y(80)
         pdf.set_font(font_pdf, 'B', 12)
         pdf.set_x(10)
@@ -122,7 +122,7 @@ if gerar_btn:
         
         pdf.ln(15)
         
-        # Bloco: SERVIÇO [cite: 47]
+        # Bloco: SERVIÇO
         pdf.set_font(font_pdf, 'B', 12)
         pdf.set_x(10)
         pdf.cell(190, 6, "SERVIÇO", ln=True, align='L')
@@ -132,7 +132,7 @@ if gerar_btn:
         
         pdf.ln(15)
         
-        # Bloco: EMISSÃO [cite: 47]
+        # Bloco: EMISSÃO
         pdf.set_font(font_pdf, 'B', 12)
         pdf.set_x(10)
         pdf.cell(190, 6, "Data", ln=True, align='L')
@@ -147,7 +147,7 @@ if gerar_btn:
         pdf.set_margins(15, 20, 15)
         pdf.set_y(20)
 
-        # 1. Contexto [cite: 48]
+        # 1. Contexto
         pdf.set_font(font_pdf, 'B', 14)
         pdf.cell(180, 10, "Contexto", ln=True)
         pdf.set_font(font_pdf, '', 11)
@@ -160,14 +160,14 @@ if gerar_btn:
         pdf.multi_cell(180, 6, texto_contexto)
         pdf.ln(5)
 
-        # 2. Objetivo [cite: 51, 52, 53]
+        # 2. Objetivo
         pdf.set_font(font_pdf, 'B', 14)
         pdf.cell(180, 10, "Objetivo", ln=True)
         pdf.set_font(font_pdf, '', 11)
         texto_objetivo = (
             "A Dr. Fiscal prestará serviços de consultoria fiscal, no sentido de retificação das "
             "obrigações fiscais acessórias, de acordo com as orientações e regulamentações emitidas "
-            "pela Receita Federal do Brasil, com o objetivo de habilitar eventuais ativos que a "
+            "pela Receita Federal do Brasil, com o objective de habilitar eventuais ativos que a "
             "empresa tenha direito de receber.\n\n"
             "O grande diferencial dos serviços prestados pela Dr. Fiscal através deste escopo é a "
             "profundidade dos exames e análises, assim como o emprego de horas técnicas de "
@@ -176,7 +176,7 @@ if gerar_btn:
         pdf.multi_cell(180, 6, texto_objetivo)
         pdf.ln(5)
 
-        # 3. Escopo [cite: 49, 50, 54]
+        # 3. Escopo
         pdf.set_font(font_pdf, 'B', 14)
         pdf.cell(180, 10, "Escopo", ln=True)
         pdf.set_font(font_pdf, '', 11)
@@ -190,33 +190,42 @@ if gerar_btn:
         pdf.multi_cell(180, 6, texto_escopo)
         pdf.ln(5)
 
-        # 4. Investimento [cite: 55, 56, 57, 58, 59, 60]
+        # 4. Investimento (CORRIGIDO E ALINHADO)
         pdf.set_font(font_pdf, 'B', 14)
         pdf.cell(180, 10, "Investimento", ln=True)
         pdf.set_font(font_pdf, '', 11)
-        pdf.multi_cell(180, 6, "A seguir, descrevemos o investmento proposto para cada escopo dos trabalhos apresentados:")
+        pdf.multi_cell(180, 6, "A seguir, descrevemos o investimento proposto para cada escopo dos trabalhos apresentados:")
+        pdf.ln(4) 
+        
+        # Alínea a)
+        pdf.multi_cell(180, 6, f"a) Remuneração: {formatar_real(total_servico)} ({extenso_total}), condicionado à avaliação da proposta dentro da validade prevista nas notas desta proposta.")
+        pdf.ln(2) 
+        
+        # Alínea b)
+        pdf.multi_cell(180, 6, f"b) Horas técnicas alocadas: {horas_tecnicas} horas.")
         pdf.ln(2)
         
-        # Alinhando as strings sem quebrar a sintaxe do Python
-        pdf.multi_cell(180, 6, f"a) Remuneração: {formatar_real(total_servico)} ({extenso_total}), condicionado à avaliação da proposta dentro da validade prevista nas notas desta proposta.")
-        pdf.multi_cell(180, 6, f"b) Horas técnicas alocadas: {horas_tecnicas} horas.")
+        # Alínea c)
         pdf.multi_cell(180, 6, f"c) Forma de Pagamento: À vista ou em até {parcelas} parcelas mensais, iguais e consecutivas.")
+        pdf.ln(2)
+        
+        # Alínea d)
         pdf.multi_cell(180, 6, f"d) Prazo para finalização: 60 dias.")
         pdf.ln(5)
 
-        # 5. Notas [cite: 61]
+        # 5. Notas
         pdf.set_font(font_pdf, 'B', 14)
         pdf.cell(180, 10, "Notas", ln=True)
         pdf.set_font(font_pdf, '', 11)
         pdf.multi_cell(180, 6, "Esta proposta tem validade de 3 dias úteis.")
 
-        # Rodapé Estilizado
+        # Rodapé
         pdf.set_y(-25)
         pdf.set_font("Arial", 'I', 8)
         pdf.cell(180, 5, razao_social.upper(), ln=True, align='C')
         pdf.cell(180, 5, "PROPOSTA DE TRABALHO - Página 2 de 2", ln=True, align='C')
 
-        # Download do PDF com tratamento de binários
+        # Download do PDF
         try:
             pdf_output = pdf.output(dest='S').encode('latin-1', 'ignore')
         except:
